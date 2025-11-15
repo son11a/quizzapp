@@ -7,7 +7,7 @@ export default function Potter() {
   const [repositories, setRepositories] = useState([]);
   const [value, setValue] = useState('');
   const [questionIndex, setQuestionIndex] = useState(null);
-  const [housee, setHouse] = useState('');
+  
   useEffect(() => {
   fetch(`https://hp-api.onrender.com/api/characters`)
   .then(response => {
@@ -18,32 +18,39 @@ export default function Potter() {
   })
   .then((data) => {
 
-    const filteredData = data.filter(character => character.house && character.house.trim() !== '');
+    const filteredData = data.filter(character => character.house && character.house.trim() !== "");
         setRepositories(filteredData);
         const randomIndex = Math.floor(Math.random() * filteredData.length);
         setQuestionIndex(randomIndex);
-        setHouse(filteredData[randomIndex].house)
+        
       })
   .catch(err => console.error(err));  
     }, []);
 
 
 const buttonPressed = () => {
+if (repositories.length === 0) return;
+
   const randomIndex = Math.floor(Math.random() * repositories.length);
         setQuestionIndex(randomIndex);
         setValue('');
 };
 
   useEffect(() => {
+    
     if (
-      value !== '' && 
-      repositories.length > 0 &&
-      questionIndex !== null &&
-      value === repositories[questionIndex].house
+      value === '' ||
+      repositories.length === 0 ||
+      questionIndex === null ||
+      !repositories[questionIndex]
     ) {
+      return;
+    }
+
+    if (value === repositories[questionIndex].house) {
       Alert.alert('Correct!');
     }
-  }, [value]);
+  }, [value, repositories, questionIndex]);
 
 
   return (
