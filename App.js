@@ -13,10 +13,9 @@ export default function App() {
   return (
  <NavigationContainer>
       <Tab.Navigator
-       screenOptions={({ route }) => ({  // Navigator can be customized using screenOptions
+       screenOptions={({ route }) => ({  
           tabBarIcon: ({ focused, color, size }) => { 
-            // Function tabBarIcon is given the focused state,
-	    // color and size params
+           
             let iconName;
 
             if (route.name === 'Home') {
